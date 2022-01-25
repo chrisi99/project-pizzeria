@@ -448,7 +448,7 @@
         body: JSON.stringify(payload)
       };
 
-      fetch(url, options)
+      fetch(url, options);
     }
   }
 
@@ -530,7 +530,7 @@
         priceSingle: thisCartProduct.priceSingle,
         name: thisCartProduct.name,
         params: thisCartProduct.params
-      }
+      };
       return orderProduct;
     }
   }
@@ -539,10 +539,10 @@
     initMenu: function(){
       const thisApp = this;
       console.log('thisApp.data:', thisApp.data);
-
-      for(let productData in thisApp.data.products){
-        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
-      }
+      
+      thisApp.data.products.forEach(function(product){
+        new Product(product.id, product);
+      });
     },
 
     initData: function(){
@@ -561,6 +561,7 @@
           thisApp.data.products = parsedReposne;
 
           app.initMenu();
+          console.log(thisApp.data.products);
         });
 
       console.log('thisApp.data', JSON.stringify(thisApp.data));
