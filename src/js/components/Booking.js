@@ -13,6 +13,8 @@ class Booking{
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+
+    
   }
 
   getData(){
@@ -160,8 +162,6 @@ class Booking{
     thisBooking.dom.submit = thisBooking.dom.wrapper.querySelector(select.booking.submit);
     thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.form);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
-
-    console.log('staerte', thisBooking.dom.starters);
   }
 
   initTables(){
@@ -177,10 +177,11 @@ class Booking{
         }
         clickedElement.classList.add(classNames.booking.selected);
         thisBooking.selectedTable.push(idTable);
-      }else{
+      }else {
         alert('Ten stolik jest już zarezerwowany');
       }
     }
+ 
   }
 
   sendBooking(){
@@ -235,6 +236,12 @@ class Booking{
 
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
+
+      for(let table of thisBooking.dom.tables){
+        table.classList.remove(classNames.booking.selected);
+      }
+
+      thisBooking.selectedTable = [];
     });
 
     thisBooking.dom.tablesWrapper.addEventListener('click', function(event){
