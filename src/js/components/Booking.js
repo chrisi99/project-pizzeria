@@ -8,7 +8,7 @@ class Booking{
   constructor(element){
     const thisBooking = this;
 
-    thisBooking.selectedTable = [];
+    thisBooking.selectedTable = null;
 
     thisBooking.render(element);
     thisBooking.initWidgets();
@@ -164,22 +164,32 @@ class Booking{
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
   }
 
-  initTables(){
+  initTables(event){
     const thisBooking = this;
 
     const clickedElement = event.target;
     const idTable = clickedElement.getAttribute(settings.booking.tableIdAttribute);
 
     if(clickedElement.classList.contains(classNames.booking.table)){
-      if(!clickedElement.classList.contains(classNames.booking.tableBooked)){
+      if(clickedElement.classList.contains(classNames.booking.tableBooked)){
+        alert('Ten stolik jest już zarezerwowany');
+        return;
+      }
+      
+      if(clickedElement.classList.contains(classNames.booking.selected)){
+        clickedElement.classList.remove(classNames.booking.selected);
+        thisBooking.selectedTable = null;
+      }else{
         for(let table of thisBooking.dom.tables){
           table.classList.remove(classNames.booking.selected);
+          thisBooking.selectedTable = null;
         }
+
         clickedElement.classList.add(classNames.booking.selected);
-        thisBooking.selectedTable.push(idTable);
-      }else {
-        alert('Ten stolik jest już zarezerwowany');
+        thisBooking.selectedTable = idTable;
+        console.log('stoliki', thisBooking.selectedTable);
       }
+
     }
  
   }
@@ -196,8 +206,8 @@ class Booking{
       duration: parseInt(thisBooking.hoursAmount.value),
       ppl: parseInt(thisBooking.peopleAmount.value),
       starters: [],
-      phone: thisBooking.dom.phone,
-      address: thisBooking.dom.address,
+      phone: thisBooking.dom.phone.value,
+      address: thisBooking.dom.address.value,
     };
 
     for(let starter of thisBooking.dom.starters){
